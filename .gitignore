@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Java
+target/
+build/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Secrets
+.env
+*.key
+
+# Large data and models
+data/raw/
+*.pkl
+*.joblib
+
+# OS
+.DS_Store
+Thumbs.db
