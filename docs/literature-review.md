@@ -19,7 +19,7 @@ The review tries to answer four questions:
 
 **Result:** 15 sources: 13 scientific papers (9 of them from 2021–2026) and 2 tool documentations. Most papers are from top software engineering conferences (ICSE, ASE, MSR, ISSTA) or from Q1–Q2 journals.
 
-**Limitations and gaps:** in Table 2 I only list limitations and open problems that the authors of each paper wrote themselves. The column "Use in this project" is my own interpretation.
+**Limitations and gaps:** in Table 2 and Section 3.5 I only list limitations and open problems that the authors of each paper wrote themselves. The column "Use in this project" is my own interpretation.
 
 ## 2. Analysis tables
 
@@ -62,6 +62,39 @@ The review tries to answer four questions:
 | 13 | Du et al. [13] | Recall is below the 90% the company wants; hard cases with deep or cross-module context; mostly memory-safety bugs in C/C++ code of one company; LLM answers are random; the data cannot be shared | False positives are a real cost in industry |
 | 14 | SpotBugs documentation [14] | — (documentation) | Choosing SpotBugs categories for the comparison |
 | 15 | PMD documentation [15] | — (documentation) | Choosing PMD rules for the comparison |
+
+## 3. Critical review
+
+### 3.1 Rule-based tools are useful but miss a lot
+
+Static bug detectors are widely used [3], but they have two problems. First, many warnings are not useful: precision of six tools on 47 Java projects was from 18% to 86%, and the tools almost did not agree with each other [9]. Developers named false positives and badly presented warnings as reasons not to use such tools [1]. Second, the tools miss most real bugs: Error Prone, Infer and SpotBugs together found only 27 of 594 real Java bugs [3]. Both studies have limits: the interview study had only 20 people [1], and the detector study does not claim that its results generalise [3].
+
+### 3.2 Machine learning for defects
+
+Some works train a model to separate useful warnings from false alarms. A simple SVM reached a median AUC of 99.5% on FindBugs warnings [5], but a later study found data leakage and duplicates in this setup. After fixing them, F1 fell from 0.88 to 0.31, which is worse than a trivial baseline (0.52) [8]. The authors advise comparing new methods with simple baselines [8].
+
+Defect prediction models try to guess which files, methods or lines contain bugs. Most studies use supervised learning and code metrics [7]. JITLine shows that a random forest can be trained in minutes instead of hours and still give AUC 0.82–0.83, and that LIME can show risky lines [6]. Transformer models can find defective lines more accurately on Java data [10].
+
+I start with classic models (random forest, gradient boosting) with explanations and use a neural network only for comparison. This is my own decision, based on the fast training and explanations in [6] and on the time I have.
+
+### 3.3 Datasets
+
+Defects4J is a widely used dataset of real Java bugs [11]; each bug has a buggy and a fixed version [2]. Static bug detectors were also tested on it [3], so SpotBugs can be compared on the same bugs. However, most Defects4J bugs are 10–15 years old [11]. GitBug-Java adds 199 newer bugs from 2023 [11]. The Unified Bug Dataset has class- and file-level metrics [4], but its authors did not check the original data [4].
+
+### 3.4 LLMs with static analysis
+
+New works combine static analysis with LLMs. IRIS found 55 of 120 Java vulnerabilities, while CodeQL alone found 27 [12]. In industry, LLMs combined with static analysis removed 94–98% of false positives of a static analyzer [13]. But the authors say that many vulnerabilities are still missed and LLM calls are expensive [12], and that the results come from C/C++ code of one company [13]. In this project, LLMs are a possible extension, not the main approach.
+
+### 3.5 Gaps stated by the authors and how this project responds
+
+| Gap stated in the source | Source | How this project responds |
+| --- | --- | --- |
+| Tools do not give enough information to decide what to do with a warning; the authors suggest better explanations | [1] | Each result has a location, type, score and explanation |
+| Bug detectors miss most real bugs; future tools should go beyond generic bug patterns | [3] | A learned model is added to static analysis and tested on the same bugs as SpotBugs |
+| New methods should be compared with simple baselines | [8] | The evaluation includes simple baselines, SpotBugs and PMD |
+| Recall of the tools was not measured | [9] | The evaluation measures both precision and recall |
+| Little evidence that defect prediction models are used in practice | [7] | The project builds a usable web tool and asks potential users |
+| Most Defects4J bugs are old | [11] | GitBug-Java is used as a second test set |
 
 ## 4. References
 
