@@ -1,0 +1,35 @@
+@startuml system-context
+title System Context Diagram — Java Defect Detection System
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam rectangle {
+  BackgroundColor<<system>> #1F6FB2
+  FontColor<<system>> #FFFFFF
+  BorderColor<<system>> #174F80
+  BackgroundColor<<external>> #EEEEEE
+  BorderColor<<external>> #888888
+}
+left to right direction
+
+actor "Java developer" as dev
+actor "Code reviewer /\nteam lead" as rev
+actor "Teacher or student\nof a Java course" as edu
+actor "Maintainer\n(author of the project)" as maint
+
+rectangle "Java Defect Detection System\n\nWeb application that analyses an uploaded\nJava project and reports likely defects with\nlocation, confidence and explanation" <<system>> as sys
+
+rectangle "Public bug datasets\n(Defects4J, GitBug-Java)" <<external>> as data
+rectangle "Baseline static analysers\n(SpotBugs, PMD)" <<external>> as base
+
+dev --> sys : uploads project,\nreads report
+rev --> sys : reads report to focus\nthe code review
+edu --> sys : checks student project,\nreads explanations
+maint --> sys : trains model,\nruns evaluation
+sys --> data : reads labelled bugs\n(training and evaluation only)
+sys --> base : runs on the same data\n(evaluation only)
+
+note bottom of sys
+  Uploaded code is processed only on the server
+  where the system runs (NFR-05).
+end note
+@enduml

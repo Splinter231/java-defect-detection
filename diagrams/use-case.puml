@@ -1,0 +1,40 @@
+@startuml use-case
+title Use Case Diagram — Java Defect Detection System
+skinparam defaultFontName Arial
+skinparam shadowing false
+left to right direction
+
+actor "Java developer" as dev
+actor "Code reviewer" as rev
+actor "Teacher / student" as edu
+actor "User" as user
+actor "Maintainer\n(author of the project)" as maint
+
+dev --|> user
+rev --|> user
+edu --|> user
+
+rectangle "Java Defect Detection System" {
+  usecase "UC1 Upload Java project\n(FR-01)" as UC1
+  usecase "UC2 Analyse project\n(FR-02 – FR-06)" as UC2
+  usecase "UC3 View analysis status\n(FR-12)" as UC3
+  usecase "UC4 View report\n(FR-08)" as UC4
+  usecase "UC5 View defect details\nand explanation (FR-06, FR-07)" as UC5
+  usecase "UC6 View source code with\nhighlighted lines (FR-09)" as UC6
+  usecase "UC7 Export report\n(FR-10)" as UC7
+  usecase "UC8 Mark false positive\n(FR-11)" as UC8
+  usecase "UC9 Train model\n(FR-13)" as UC9
+  usecase "UC10 Evaluate against\nSpotBugs and PMD (FR-14)" as UC10
+}
+
+user --> UC1
+user --> UC3
+user --> UC4
+user --> UC7
+user --> UC8
+UC1 ..> UC2 : <<include>>
+UC4 <.. UC5 : <<extend>>
+UC5 <.. UC6 : <<extend>>
+UC9 <-- maint
+UC10 <-- maint
+@enduml
