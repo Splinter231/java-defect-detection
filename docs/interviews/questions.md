@@ -1,7 +1,9 @@
 # Interview Questions
 
 **Task:** DIP-52
+
 **Format:** text chat
+
 **Interviewees:** teachers of programming courses and Java developers (target: 3–5)
 
 ## Hypotheses
