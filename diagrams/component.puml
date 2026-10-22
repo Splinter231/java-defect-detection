@@ -1,0 +1,56 @@
+@startuml component
+title Component Diagram (draft) — Java Defect Detection System
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam nodesep 40
+skinparam ranksep 45
+
+actor "User (browser)" as user
+
+package "Web application (FastAPI)" {
+  [Web UI\n(Jinja2 pages)] as ui
+  [REST API] as api
+  [Job manager\n(background tasks)] as jobs
+}
+
+package "Analysis pipeline" {
+  [Project loader\n(ZIP / .java)] as loader
+  [Java parser\n(tree-sitter-java)] as parser
+  [Feature extractor\n(metrics, structure)] as feat
+  [Defect model\n(scikit-learn)] as model
+  [Explainer\n(SHAP)] as expl
+  [Report builder] as report
+}
+
+package "Offline tools (maintainer)" {
+  [Training pipeline] as train
+  [Evaluation module] as eval
+}
+
+database "SQLite\n(jobs, findings,\nmarks)" as db
+artifact "Trained model\nfile" as mfile
+collections "Public bug datasets" as ds
+node "SpotBugs / PMD" as base
+
+user --> ui : HTTP
+ui -right-> api
+api -down-> jobs : start analysis
+api --> db : read report
+jobs -down-> loader
+loader -left-> parser
+parser -left-> feat
+feat -down-> model
+model -right-> expl
+expl -right-> report
+report --> db : save findings
+model ..> mfile : loads
+
+train --> parser
+train --> feat
+train --> mfile : writes
+train --> ds : reads
+eval --> ds : reads
+eval --> model
+eval --> base : runs baselines
+@enduml

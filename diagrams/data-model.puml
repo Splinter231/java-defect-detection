@@ -1,0 +1,47 @@
+@startuml data-model
+title Data Model (draft) — stored in SQLite
+skinparam defaultFontName Arial
+skinparam shadowing false
+hide circle
+skinparam linetype ortho
+
+entity "analysis_job" as job {
+  * id : integer <<PK>>
+  --
+  uploaded_name : text
+  status : text (queued / running / finished / failed)
+  created_at : datetime
+  finished_at : datetime
+  error_message : text
+}
+entity "source_file" as file {
+  * id : integer <<PK>>
+  --
+  * job_id : integer <<FK>>
+  path : text
+  parse_status : text (ok / error)
+  parse_error : text
+}
+entity "finding" as finding {
+  * id : integer <<PK>>
+  --
+  * file_id : integer <<FK>>
+  class_name : text
+  method_name : text
+  start_line : integer
+  end_line : integer
+  score : real (0..1)
+  category : text
+  explanation : text (JSON)
+}
+entity "user_mark" as mark {
+  * id : integer <<PK>>
+  --
+  * finding_id : integer <<FK>>
+  mark : text (false_positive)
+  created_at : datetime
+}
+job ||--o{ file
+file ||--o{ finding
+finding ||--o| mark
+@enduml

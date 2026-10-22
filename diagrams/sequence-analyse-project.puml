@@ -1,0 +1,41 @@
+@startuml sequence-analyse-project
+title Sequence Diagram — Analyse a project (UC1, UC2, UC3, UC4)
+skinparam defaultFontName Arial
+skinparam shadowing false
+actor User
+participant "Web UI" as UI
+participant "REST API" as API
+participant "Job manager" as Jobs
+participant "Analysis pipeline" as Pipe
+database "SQLite" as DB
+
+User -> UI : choose ZIP and press "Analyse"
+UI -> API : POST /analyses (file)
+API -> API : validate file (FR-01)
+alt invalid file
+  API --> UI : error message
+  UI --> User : show error
+else valid file
+  API -> DB : create job (status = queued)
+  API -> Jobs : start background analysis
+  API --> UI : job id
+  UI --> User : status page
+  par background analysis
+    Jobs -> DB : status = running
+    Jobs -> Pipe : analyse(project)
+    Pipe -> Pipe : parse files, extract features,\npredict, explain (FR-02 – FR-07)
+    Pipe --> Jobs : findings + files that failed to parse
+    Jobs -> DB : save findings, status = finished
+  else status polling
+    loop until status is finished or failed
+      UI -> API : GET /analyses/{id}
+      API -> DB : read status
+      API --> UI : status (FR-12)
+    end
+  end
+  UI -> API : GET /analyses/{id}/report
+  API -> DB : read findings
+  API --> UI : findings sorted by score (FR-08)
+  UI --> User : report
+end
+@enduml
