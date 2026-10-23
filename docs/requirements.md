@@ -2,7 +2,7 @@
 
 **Task:** DIP-14
 
-**Status:** Draft (will be updated after the interviews, DIP-52)
+**Status:** Draft. Section 6 is added from the first interview (DIP-52).
 
 ## 1. Introduction
 
@@ -10,7 +10,7 @@ This document lists the functional and non-functional requirements of the system
 
 **Priorities (MoSCoW):** **Must** — needed for the system to work; **Should** — important, planned for the final version; **Could** — if there is time; **Won't** — not planned (Section 5).
 
-**Sources:** P — proposal; L[n] — literature review, reference [n]; S — comparison of existing systems; I — interviews (added later).
+**Sources:** P — proposal; L[n] — literature review, reference [n]; S — comparison of existing systems; I — interviews (`docs/interviews/`).
 
 Numbers in the acceptance criteria (sizes, times, percentages) are first estimates. They will be checked with the supervisor and after the first experiments.
 
@@ -64,4 +64,13 @@ Numbers in the acceptance criteria (sizes, times, percentages) are first estimat
 
 ## 6. Requirements from interviews
 
-This section will be filled after the interviews (DIP-52). New requirements will have the source **I** and a link to the interview notes.
+Source: interview P1 ([interview-01.md](interviews/interview-01.md)), see also `docs/relevance.md`.
+
+| ID | Requirement | Priority | Acceptance criterion | Source |
+| --- | --- | --- | --- | --- |
+| FR-15 | Each result shows a severity level (high, medium, low) next to the score | Should | Every result in the report has a severity level; the level depends on the defect category and the score | I (P1, Q7) |
+| FR-16 | The explanation describes what can happen because of the defect and, if possible, how to fix it | Could | For each defect category there is a short risk scenario and a fix hint | I (P1, Q7) |
+| FR-17 | When the same project is analysed again, the report shows which results are new | Could | Results that were in the previous analysis of the project are marked as old | I (P1, Q7, Q8) |
+| FR-18 | A teacher can see a summary over several analysed projects | Could | One page lists the analysed projects with the number of results and the highest score | I (P1, Q8) |
+
+The interview also supports existing requirements: FR-07 (explanation), FR-11 (mark as false positive), FR-04 (the same input gives the same score) and NFR-05 (code is not sent to other services). An IDE plugin and CI integration were also mentioned; they stay out of scope (Section 5) and are possible future work.
