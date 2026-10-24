@@ -17,3 +17,4 @@ Task IDs refer to YouTrack: https://java-defect-detection.youtrack.cloud/issues/
 | [evaluation-plan.md](evaluation-plan.md) | Evaluation and test plan | DIP-55 |
 | [project-plan.md](project-plan.md) | Stages, milestones, dependencies, risks | DIP-56 |
 | [supervisor-feedback.md](supervisor-feedback.md) | Supervisor's feedback and decisions | DIP-57 |
+| [pre-defense-1.md](pre-defense-1.md) | Submission note for pre-defense 1 | DIP-58 |
