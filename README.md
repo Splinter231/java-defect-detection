@@ -62,6 +62,8 @@ All screens: [docs/prototype](docs/prototype/README.md). Figma file: https://www
 | [Prototype](docs/prototype/README.md) | DIP-54 |
 | [Evaluation and test plan](docs/evaluation-plan.md) | DIP-55 |
 | [Project plan and risks](docs/project-plan.md) | DIP-56 |
+| [Supervisor's feedback](docs/supervisor-feedback.md) | DIP-57 |
+| [Pre-defense 1 submission note](docs/pre-defense-1.md) | DIP-58 |
 
 Task tracker (YouTrack): https://java-defect-detection.youtrack.cloud/issues/DIP
 
