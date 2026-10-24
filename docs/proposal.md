@@ -2,7 +2,7 @@
 
 **Task:** DIP-51
 
-**Status:** Draft for supervisor review
+**Status:** Draft. Updated after the supervisor's review on 24 October 2026 (`docs/supervisor-feedback.md`).
 
 ## 1. Project title
 
@@ -37,6 +37,10 @@ In this project a **defect** is an error in the code that can make the program w
 
 Code smells and style problems (long methods, naming, formatting) are **not** counted as defects.
 
+**First version:** the system shows a category for two defect types: **null dereference** (a value that can be null is used without a check) and **resource not closed** (a stream or connection is not closed with try-with-resources or in `finally`). Both are found by rule checks on the syntax tree. Other categories come later.
+
+**Role of machine learning:** the model predicts which methods are likely to be defective (a score from 0 to 1). It does not rank SpotBugs or PMD warnings; these tools are only baselines in the evaluation.
+
 ## 5. Target users
 
 | User group | What they need |
@@ -44,6 +48,8 @@ Code smells and style problems (long methods, naming, formatting) are **not** co
 | Java developers | Check their code for likely bugs before code review |
 | Code reviewers and team leads | Know which parts of the code to review more carefully |
 | Teachers and students of Java courses | Find typical errors in student projects and understand why the code is risky |
+
+**Primary user of the first version:** Java developers who check a whole project, for example before a release or in old code. The first version is a web application; an IDE plugin or a CI check can use the same REST API later.
 
 ## 6. Aim
 
@@ -103,7 +109,8 @@ The project has several different technical parts that must work together:
 
 | Decision | Choice | Status |
 | --- | --- | --- |
-| User interface | Web application | Waiting for supervisor confirmation |
-| What counts as a defect | Bugs, not code smells | Waiting for supervisor confirmation |
-| Tools to compare with | SpotBugs (main), PMD (additional) | Proposed |
-| Technologies | Python, tree-sitter, scikit-learn, SHAP, FastAPI, SQLite (`docs/technology-comparison.md`) | Proposed |
+| User interface | Web application (first version); primary user: Java developers | Accepted by the supervisor, 24 October |
+| What counts as a defect | Bugs, not code smells; first version: null dereference, resource not closed | Accepted, 24 October |
+| Role of machine learning | Predict defective methods; SpotBugs and PMD only as baselines | Decided after the supervisor's review, 24 October |
+| Tools to compare with | SpotBugs (main), PMD (additional) | Accepted, 24 October |
+| Technologies | Python, tree-sitter, scikit-learn, SHAP, FastAPI, SQLite (`docs/technology-comparison.md`) | No comments; kept |
