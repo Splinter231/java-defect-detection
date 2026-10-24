@@ -42,6 +42,6 @@ Requirements from the interview are added to `docs/requirements.md`, Section 6, 
 
 ## 5. Limitations
 
-- Only one interview, so the results cannot be generalised; they are combined with the literature.
+- Only one interview, so the results cannot be generalised; they are combined with the literature. The interview is preliminary evidence; 1–2 interviews with practising Java developers are planned for November 2026.
 - The participant is a teacher who worked as a developer before, not a current industry developer.
 - Text chats give shorter answers than live interviews.

@@ -30,7 +30,7 @@ Numbers in the acceptance criteria (sizes, times, percentages) are first estimat
 | FR-02 | The system parses every `.java` file | Must | Files that cannot be parsed are listed in the report with the reason; other files are still analysed | P |
 | FR-03 | The system computes code metrics and other features for each method | Must | Unit tests check the values on sample files with known metrics | P |
 | FR-04 | A machine learning model gives each method a score from 0 to 1 (probability of a defect) | Must | Every analysed method has a score; the same input always gives the same score | P |
-| FR-05 | The system shows the likely defect category when possible (for example null dereference, resource not closed, wrong comparison, exception handling error) | Should | For test files with a known defect of each category, the right category is shown | P |
+| FR-05 | The system shows the likely defect category when possible (first version: null dereference and resource not closed; other categories later) | Should | For test files with a known defect of each category, the right category is shown | P |
 | FR-06 | Each result shows the file, class, method and lines | Must | Every report entry has the file path, class and method; lines are shown when available | P, L[10] |
 | FR-07 | Each result has an explanation: the main code features that led to the score, in simple words | Must | Every entry shows at least three factors with a short text | L[1], L[12] |
 | FR-08 | The report lists results sorted by score | Must | Entries are sorted by score; the user can filter by file and by minimum score | P |

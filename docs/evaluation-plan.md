@@ -2,7 +2,7 @@
 
 **Task:** DIP-55
 
-**Status:** Draft. Targets are first estimates and may change after the first experiments.
+**Status:** Draft. Targets are first estimates and may change after the first experiments. Labelling, data split and correct detections updated after the supervisor's review on 24 October 2026.
 
 ## 1. Goal
 
@@ -18,11 +18,11 @@ The aim of the project is a system that finds likely defects in Java code and is
 | Defects4J 3.0.1 | 854 real bugs from 17 Java projects; each fix is cleaned from unrelated changes [1] | Training and testing |
 | GitBug-Java | 199 real bugs from 55 projects, fixed in 2023 [2] | Testing only, never used for training |
 
-**Labels.** For each bug I take the code before the fix and look at which methods the fix changed:
+**Labels.** For each bug I compare the code before and after the fix:
 
-- a method changed by the fix is **defective**;
-- the other methods in the same files are **clean**;
-- changes only in comments or spaces are ignored.
+- each changed or deleted line of the code before the fix is mapped to its method, and this method is **defective** (if the fix only adds lines, the method where they are added);
+- the other methods in the same files are **not known to be defective**: they are used as clean examples, but they can still contain bugs that were never found;
+- changes only in comments or spaces are ignored; bugs whose fix changes only code outside methods are left out and counted.
 
 GitBug-Java gives the commit before and after each fix and the patch [2], so I only need the source code. The full GitBug-Java environment (about 240 GB) is not needed, because the project does not run tests.
 
@@ -33,6 +33,8 @@ A model can look much better than it is if test data leaks into training. In one
 - **Split by project.** Each of the 17 Defects4J projects is used once as the test project, and the model is trained on the other 16 (NFR-02).
 - **Final test on new bugs.** The final model is trained on all of Defects4J and tested once on GitBug-Java.
 - **No duplicates.** Methods with the same code in training and test data are removed from the test data.
+- **One bug in one set.** All methods of one bug are always in the same set (this holds with the split by project).
+- **Validation set.** Model settings are chosen only on the training projects; the test project is used once, for the final result.
 - **Only the code before the fix** is used to compute features.
 
 ## 4. What the system is compared with
@@ -48,6 +50,8 @@ A model can look much better than it is if test data leaks into training. In one
 
 I use only the bug-related categories of SpotBugs and PMD, because this project is about bugs, not style. A tool "reports" a method if one of its warnings is on a line inside that method.
 
+**Correct detection.** The unit is the method: a method reported by the model or by a tool is a correct detection if the fix changed it. The category is not needed for this; the two rule checks are tested separately (FR-05).
+
 SpotBugs works on compiled code [3], so each Defects4J project is compiled first. The SpotBugs documentation says that class files from JDK 10 and older are not supported [3], so I will check this on a few projects first and use an older SpotBugs version if needed.
 
 ## 5. Metrics and targets
@@ -58,6 +62,7 @@ SpotBugs works on compiled code [3], so each Defects4J project is compiled first
 | Recall | Of the defective methods, how many are reported |
 | F1-score | Balance of precision and recall |
 | Bugs found | Share of bugs where at least one defective method is reported |
+| False positives | Reported methods that the fix did not change, per project |
 | Analysis time | Time to analyse one project |
 
 **Targets (first estimates):**
